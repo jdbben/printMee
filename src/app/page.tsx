@@ -1,4 +1,5 @@
 import MaxWidthWrapper from "@/components/MaxWidthWrapper"
+import SlideShow from "@/components/SlideShow";
 import TypeEffect from "@/components/TypeEffect";
 import Users from "@/components/Users";
 import { Check, Star } from "lucide-react";
@@ -40,8 +41,8 @@ export default function Home() {
           <div className="relative right-0">
             <div className=" h-[60vh] w-100 bg-gradient-to-tr from-cyan-500 to-to-blue-500 shadow-2xl opacity-3  rounded-3xl">
 
-              <div className=" h-[60vh] w-100 bg-white shadow-2xl opacity-50  rounded-3xl">
-
+              <div className=" h-[60vh] w-100 bg-white shadow-2xl opacity-50 overflow-hidden  rounded-3xl">
+                <SlideShow />
               </div>
             </div>
           </div>
