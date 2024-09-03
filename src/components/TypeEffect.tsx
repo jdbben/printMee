@@ -1,8 +1,11 @@
 "use client"
 
+import { cn } from "@/lib/utils";
 import { useEffect, useState } from "react";
-const TypeEffect = () => {
-  const text: string = "At PrintMee, we believe your memories are invaluable and deserve to be celebrated with elegance. Whether it’s a cherished photo, a meaningful quote, or a unique design, our custom products allow you to transform your special moments into personalized treasures. Celebrate your story with our beautifully crafted items and keep your most treasured memories close to your heart."
+const TypeEffect = ({ classname, text }: {
+  classname?: string;
+  text: string;
+}) => {
 
   const [textEffct, setTextEffect] = useState<string>("")
 
@@ -10,7 +13,7 @@ const TypeEffect = () => {
   const deleyPara = (index: number, nextletter: string) => {
     setTimeout(function () {
       setTextEffect((prev) => prev + nextletter)
-    }, 75 * index)
+    }, 50 * index)
   }
 
   useEffect(() => {
@@ -23,7 +26,7 @@ const TypeEffect = () => {
     <div>
 
       <>
-        {textEffct}
+        <p className={cn('', classname)}>{textEffct}</p>
       </>
 
     </div>
