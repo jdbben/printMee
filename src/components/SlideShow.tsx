@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react"
-import { imageAssets } from "../lib/assets"
+import { imageAssets } from "../lib/constants"
 import { cn } from "@/lib/utils";
 
 imageAssets.push(imageAssets[0])
@@ -10,12 +10,6 @@ const SlideShow = () => {
     const [transition, setTransition] = useState(0);
     const [duration, setDuration] = useState('')
 
-
-
-
-
-
-
     useEffect(() => {
         if (ref.current) {
             const job = setInterval(() => {
@@ -24,7 +18,7 @@ const SlideShow = () => {
                     prev - (ref.current?.offsetWidth ?? 0)
                 );
             }
-                , 1000)
+                , 3000)
             return () => {
                 clearInterval(job)
             }

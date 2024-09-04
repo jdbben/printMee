@@ -1,3 +1,4 @@
+import HeaderTitel from "@/components/HeaderTitel";
 import MaxWidthWrapper from "@/components/MaxWidthWrapper"
 import SlideShow from "@/components/SlideShow";
 import TypeEffect from "@/components/TypeEffect";
@@ -9,10 +10,19 @@ export default function Home() {
 
   return (
     <MaxWidthWrapper>
+
       <section className="pt-[15vh]">
         <div className="relative  grid grid-rows-2 md:grid-rows-2 lg:grid-cols-2 gap-9 ">
           <div className=" left-0 flex w-full h-[40vh] grid grid-cols-1 ">
-            <h1 className="m-2 font-bold text-5xl whitespace-normal leading-relaxed ">Your Image on a <span className="bg-sky-400 justify-center items-center text-6xl text-wh">Custom</span> T-shirt</h1>
+            <h1 className="m-2 font-bold text-5xl whitespace-normal leading-relaxed ">Your Image on a</h1>
+            <div>
+              <div className="h-[5vh] w-fit rounded-lg ring-2  ring-sky-400 overflow-hidden flex flex-rows" >
+                <span className="bg-sky-400 text-white text-5xl font-bold">Custom</span>
+                <HeaderTitel />
+              </div>
+            </div>
+
+            <br />
             <p className="text-lg  ">Preserve Your Cherished Moments with Custom Creations from PrintMee!</p>
             <TypeEffect classname="pt-5 font-bold font-poppins" text={text} />
             <p className=""></p>
@@ -33,18 +43,22 @@ export default function Home() {
                 <Star className="text-sky-400 fill-sky-400 h-5 w-5" />
                 <Star className="text-sky-400 fill-sky-400 h-5 w-5" />
                 <Star className="text-sky-400 fill-sky-400 h-5 w-5" />
-                <p className="pl-3">Over <span className="font-bold">1.500</span>happy customers</p>
+                <p className="pl-3">Over <span className="font-bold">1.500</span> happy customers</p>
               </div>
 
             </div>
           </div>
           <div className="relative right-0">
-            <div className=" h-[60vh] w-100 bg-gradient-to-tr from-cyan-500 to-to-blue-500 shadow-2xl opacity-3  rounded-3xl">
+            <div className="relative h-[60vh] w-full bg-gradient-to-tr from-cyan-500 to-blue-500 shadow-2xl rounded-3xl">
 
-              <div className=" h-[60vh] w-100 bg-white shadow-2xl opacity-50 overflow-hidden  rounded-3xl">
+              <div className="absolute inset-0 h-full w-full bg-white shadow-2xl opacity-50 rounded-3xl" />
+
+              <div className="relative h-[60vh] w-full rounded-3xl overflow-hidden">
                 <SlideShow />
               </div>
+
             </div>
+
           </div>
         </div>
 
