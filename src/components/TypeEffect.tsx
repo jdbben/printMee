@@ -1,10 +1,11 @@
 "use client"
 
 import { cn } from "@/lib/utils";
-import { useEffect, useState } from "react";
-const TypeEffect = ({ classname, text }: {
+import { CSSProperties, useEffect, useState } from "react";
+const TypeEffect = ({ classname, text, stylish }: {
   classname?: string;
   text: string;
+  stylish?: CSSProperties;
 }) => {
 
   const [textEffct, setTextEffect] = useState<string>("")
@@ -26,7 +27,7 @@ const TypeEffect = ({ classname, text }: {
     <div>
 
       <>
-        <p className={cn('', classname)}>{textEffct}</p>
+        <p className={cn('', classname)} style={stylish} >{textEffct}</p>
       </>
 
     </div>

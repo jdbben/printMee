@@ -18,7 +18,7 @@ const SlideShow = () => {
                     prev - (ref.current?.offsetWidth ?? 0)
                 );
             }
-                , 3000)
+                , 5000)
             return () => {
                 clearInterval(job)
             }
