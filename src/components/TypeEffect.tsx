@@ -25,7 +25,6 @@ const TypeEffect = ({ classname, text, stylish }: {
       }
     }, 50 * index)
   }
-
   useEffect(() => {
 
     if (isVisible && !hasTregerd) {

@@ -1,5 +1,6 @@
 import HeaderTitel from "@/components/HeaderTitel";
 import MaxWidthWrapper from "@/components/MaxWidthWrapper"
+import Phone from "@/components/Phone";
 import SlideShow from "@/components/SlideShow";
 import TypeEffect from "@/components/TypeEffect";
 import Users from "@/components/Users";
@@ -109,7 +110,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="relative h-fit gap-5  w-fit mx-auto rounded-[50px] bg-gradient-to-r from-cyan-400 to-blue-500 shadow-2xl mt-[10vh] overflow-hidden grid grid-cols-1 lg:grid-cols-2 items-center justify-center">
+        <div className="relative h-fit gap-5 mb-11 w-fit mx-auto rounded-[50px] bg-gradient-to-r from-cyan-400 to-blue-500 shadow-2xl mt-[10vh] overflow-hidden grid grid-cols-1 lg:grid-cols-2 items-center justify-center">
           <div className="relative  h-[500px] w-[350px] rounded-[30px] shadow-2xl bg-white/30 backdrop-blur-md ring-2 ring-white flex flex-col items-center justify-center m-10">
             <div className="bg-slate-100 h-fit w-fit rounded-lg shadow-lg p-2 mx-auto ">
               <p className="font-bold text-center"><span className="text-sky-400">Print</span>mee</p>
@@ -139,9 +140,18 @@ export default function Home() {
         </div>
 
       </div>
-      <div className="w-full h-[100vh] "></div>
+      <div className="w-full h-[100vh]  ">
 
+        <div className="mx-auto grid grid-cols-1 h-fit w-fit max-w-screen-xl px-2.5 md:px-20">
+          <p className=" pt-[10vh] font-bold text-3xl lg:text-6xl lg:leading-relaxed">Upload Your Photos and get <span className="text-white bg-sky-400">your own product of choosing</span> now</p>
+          <div className="grid grid-cols-1 lg:grid-cols-3 h-fit w-fit justify-center items-center mt-9 lg:gap-0 mx-auto">
+            <img src="/imgs/hors_img.png" alt="" width={400} height={400} className="rounded-lg relative lg:left-[10vh]" />
+            <img className="mx-auto rotate-90 lg:rotate-0 m-[10vh]" src="/imgs/arrow.png" alt="" width={150} />
+            <Phone imgsrc="/imgs/hors.png" className="w-60 lg:right-[10vh] mx-auto" />
+          </div>
+        </div>
 
+      </div>
     </div>
 
   );
