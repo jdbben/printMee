@@ -110,7 +110,7 @@ export default function Home() {
         </div>
 
         <div className="relative h-fit gap-5  w-fit mx-auto rounded-[50px] bg-gradient-to-r from-cyan-400 to-blue-500 shadow-2xl mt-[10vh] overflow-hidden grid grid-cols-1 lg:grid-cols-2 items-center justify-center">
-          <div className="relative  h-[500px] w-[350px] rounded-[30px] shadow-2xl bg-white/30 backdrop-blur-md m-auto ring-2 ring-white flex flex-col items-center justify-center m-10">
+          <div className="relative  h-[500px] w-[350px] rounded-[30px] shadow-2xl bg-white/30 backdrop-blur-md ring-2 ring-white flex flex-col items-center justify-center m-10">
             <div className="bg-slate-100 h-fit w-fit rounded-lg shadow-lg p-2 mx-auto ">
               <p className="font-bold text-center"><span className="text-sky-400">Print</span>mee</p>
             </div>

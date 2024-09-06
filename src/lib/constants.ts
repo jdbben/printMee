@@ -7,4 +7,4 @@ export const imageAssets = [
 
 ]
 
-export const headertitels = ["T-shirt", "Phone Case", "Stickers", "Picturs", "T-shirt"]
+export const headertitels = ["T-shirt", "Phone Case", "Stickers", "Pictures", "T-shirt"]
