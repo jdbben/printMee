@@ -1,22 +1,30 @@
-import { redirect } from 'next/navigation'
+import { addNewpic } from "@/db/find";
+import { getServerSession, Session } from "next-auth";
 import { createUploadthing, type FileRouter } from "uploadthing/next";
-import { UploadThingError } from "uploadthing/server";
-const f = createUploadthing()
+import { v4 as uuidv4 } from "uuid";
+import { options } from "../auth/[...nextauth]/options";
+const f = createUploadthing();
 
-const auth = (req: Request) => ({ id: "fakeId" })
 export const ourFileRouter = {
-    imageUploader: f({ image: { maxFileSize: "4MB" } })
-        .middleware(async ({ req }) => {
-            const user = auth(req);
-            if (!user) throw new UploadThingError("Unauthorized")
-            return { userId: user.id }
-        })
-        .onUploadComplete(async ({ metadata, file }) => {
-            //on complete scss i should run some code here
-            console.log("Upload complete for user:", metadata.userId)
-            console.log("file url", file.url)
-            return { uploadedBy: metadata.userId };
-        }),
+  imageUploader: f({ image: { maxFileSize: "4MB" } })
+    .middleware(async ({ req }) => {
+      const session: Session | null = await getServerSession(options);
+      const user = session?.user;
+      const id: string = uuidv4();
+      return {
+        uploadId: id,
+        username: user?.name,
+        useremail: user?.email,
+        userimg: user?.image,
+      };
+    })
+    .onUploadComplete(async ({ metadata, file }) => {
+      await addNewpic(metadata, file);
+      //on complete scss i should run some code here
+      console.log("Upload complete for user:", metadata.uploadId);
+      console.log("file url", file.url);
+      return { uploadedBy: metadata.uploadId };
+    }),
 } satisfies FileRouter;
 
 export type OurFileRouter = typeof ourFileRouter;
