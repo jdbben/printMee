@@ -5,22 +5,28 @@ interface MousePosition {
   x: number | null;
   y: number | null;
 }
-
-const ResizeImg: React.FC = () => {
+type Props = {
+  img: string;
+};
+const ResizeImg: React.FC<Props> = ({ img }) => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const ref = useRef<HTMLImageElement>(null);
+  const ref = useRef<HTMLDivElement>(null);
+  const imgref = useRef<HTMLImageElement>(null);
+  const [mouseMouve, setMouseMouve] = useState<MousePosition>({
+    x: null,
+    y: null,
+  });
   const getMouseMouve = () => {
-    const [mousemouve, setMouseMouve] = useState<MousePosition>({
-      x: null,
-      y: null,
-    });
-
     const updateMousePosition = (ev: MouseEvent) => {
       const rect = containerRef.current?.getBoundingClientRect();
-      if (rect) {
+      const imgp = imgref.current?.getBoundingClientRect();
+      if (rect && imgp) {
+        console.log();
+        const relativeX = ev.clientX - rect.left - imgp.left;
+        const relativeY = ev.clientY - rect.top - imgp.top;
         setMouseMouve({
-          x: ev.clientX - rect.left,
-          y: ev.clientY - rect.top,
+          x: relativeX,
+          y: relativeY,
         });
       }
     };
@@ -40,18 +46,23 @@ const ResizeImg: React.FC = () => {
         });
       }
     }, []);
-    return mousemouve;
+    return mouseMouve;
   };
   const mousemouve = getMouseMouve();
 
   return (
-    <div className="h-full w-full" ref={containerRef}>
+    <div className="h-[70vh] w-[65vh]" ref={containerRef}>
       <div
         ref={ref}
         style={{ left: `${mousemouve.x}px`, top: `${mousemouve.y}px` }}
-        className="relative bg-red-300 h-fit w-fit"
+        className="relative h-fit w-fit"
       >
-        <p>hello</p>
+        <img
+          ref={imgref}
+          className="select-none pointer-events-none"
+          src={img}
+          alt=""
+        />
       </div>
     </div>
   );

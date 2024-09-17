@@ -1,12 +1,14 @@
 import prisma from "@/db/prismaClient";
+import { getServerSession, Session } from "next-auth";
+import { options } from "../auth/[...nextauth]/options";
 
-export const getuserImg = async (name: string) => {
+export const getuserImg = async (session: Session | null) => {
   let userImgData: string[] = [];
-  if (typeof name === "string") {
+  if (session?.user && typeof session.user.name === "string") {
     try {
       const userInfos = await prisma.user.findUnique({
         where: {
-          name: name,
+          name: session.user.name,
         },
         include: {
           PrevImgs: true,
