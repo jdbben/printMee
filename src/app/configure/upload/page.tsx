@@ -1,11 +1,9 @@
 "use client";
-import { usePicUrl } from "@/components/PictururlContext";
 import { addNewpic } from "@/db/find";
 import { UploadDropzone } from "@/utils/uploadthing";
 import { useRouter } from "next/navigation";
 
 const Page = () => {
-  const { setPicUrl } = usePicUrl();
   const router = useRouter();
   const routing = () => {
     router.push("/configure/design/");
@@ -18,7 +16,6 @@ const Page = () => {
           <UploadDropzone
             endpoint="imageUploader"
             onClientUploadComplete={(res) => {
-              setPicUrl(res[0].url);
               routing();
             }}
             onUploadError={(error: Error) => {

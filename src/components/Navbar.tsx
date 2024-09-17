@@ -1,7 +1,7 @@
-import { DefaultUser, getServerSession, Session } from "next-auth";
+import { getServerSession, Session } from "next-auth";
+import Link from "next/link";
 import MaxWidthWrapper from "./MaxWidthWrapper";
 import { options } from "@/app/api/auth/[...nextauth]/options";
-import Link from "next/link";
 
 const Navbar = async () => {
   const session: Session | null = await getServerSession(options);
@@ -22,7 +22,7 @@ const Navbar = async () => {
                 <Link href={"/api/auth/signout"}>Sign out</Link>
               </div>
             ) : (
-              <Link href={"/api/auth/signin?callbackUrl=/"}>Sign up</Link>
+              <Link href={"/api/auth/signin"}>Sign up</Link>
             )}
             <div className="h-12 w-fit p-3 bg-sky-500 rounded-2xl  hover:shadow-lg ">
               <Link

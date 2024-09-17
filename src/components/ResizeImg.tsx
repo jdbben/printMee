@@ -1,18 +1,14 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { usePicUrl } from "./PictururlContext";
+
 interface MousePosition {
   x: number | null;
   y: number | null;
 }
-interface ResizeImgProps {
-  containerRef: React.RefObject<HTMLDivElement>;
-}
 
-const ResizeImg: React.FC<ResizeImgProps> = ({ containerRef }) => {
-  const ref = useRef<HTMLParagraphElement>(null);
-  const { picUrl } = usePicUrl();
-
+const ResizeImg: React.FC = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLImageElement>(null);
   const getMouseMouve = () => {
     const [mousemouve, setMouseMouve] = useState<MousePosition>({
       x: null,
@@ -28,6 +24,7 @@ const ResizeImg: React.FC<ResizeImgProps> = ({ containerRef }) => {
         });
       }
     };
+
     useEffect(() => {
       const container = containerRef.current;
       const theref = ref.current;
@@ -45,18 +42,17 @@ const ResizeImg: React.FC<ResizeImgProps> = ({ containerRef }) => {
     }, []);
     return mousemouve;
   };
-
   const mousemouve = getMouseMouve();
 
   return (
-    <div>
-      <p
+    <div className="h-full w-full" ref={containerRef}>
+      <div
         ref={ref}
         style={{ left: `${mousemouve.x}px`, top: `${mousemouve.y}px` }}
-        className="relative"
+        className="relative bg-red-300 h-fit w-fit"
       >
-        fuck you
-      </p>
+        <p>hello</p>
+      </div>
     </div>
   );
 };

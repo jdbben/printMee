@@ -9,7 +9,7 @@ datasource db {
 
 model User {
   id         Int     @id @default(autoincrement())
-  name       String?
+  name       String  @unique
   email      String?
   profilePic String?
   gitHubId   String  @unique
@@ -17,7 +17,7 @@ model User {
 }
 
 model Image {
-  uploadId String @id
+  uploadId String @id @unique
   url      String
   userId   Int?
   user     User?  @relation(fields: [userId], references: [id])

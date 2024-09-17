@@ -1,7 +1,7 @@
-import { ClientUploadedFileData, UploadedFileData } from "uploadthing/types";
-import prisma from "./prismaClient";
+import { getServerSession, Session } from "next-auth";
 import { JWT } from "next-auth/jwt";
-import { Session } from "next-auth";
+import { UploadedFileData } from "uploadthing/types";
+import prisma from "./prismaClient";
 
 export const addNewpic = async (
   metadata: {
@@ -12,12 +12,17 @@ export const addNewpic = async (
   },
   file: UploadedFileData
 ) => {
-  if (metadata && file) {
+  if (metadata && file && metadata.username) {
     try {
       await prisma.image.create({
         data: {
           uploadId: metadata.uploadId,
           url: file.url,
+          user: {
+            connect: {
+              name: metadata.username,
+            },
+          },
         },
       });
       console.log("img uploaded to db ");

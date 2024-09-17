@@ -1,12 +1,7 @@
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
-import { PicUrlProvider } from "@/components/PictururlContext";
 
 const layout = ({ children }: Readonly<{ children: React.ReactNode }>) => {
-  return (
-    <MaxWidthWrapper>
-      <PicUrlProvider>{children}</PicUrlProvider>
-    </MaxWidthWrapper>
-  );
+  return <MaxWidthWrapper>{children}</MaxWidthWrapper>;
 };
 
 export default layout;

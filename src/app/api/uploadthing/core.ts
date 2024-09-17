@@ -21,7 +21,12 @@ export const ourFileRouter = {
     .onUploadComplete(async ({ metadata, file }) => {
       await addNewpic(metadata, file);
       //on complete scss i should run some code here
-      console.log("Upload complete for user:", metadata.uploadId);
+
+      console.log(
+        "Upload complete for user:",
+        metadata.uploadId,
+        metadata.username
+      );
       console.log("file url", file.url);
       return { uploadedBy: metadata.uploadId };
     }),
