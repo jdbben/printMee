@@ -100,7 +100,13 @@ const ResizeImg: React.FC<Props> = ({ img }) => {
 
   return (
     <div className="flex flex-1 mt-[10vh] justify-center items-center border-dashed border-2 rounded-lg border-gray-300 overflow-hidden  ">
-      <div className="h-[70vh] w-[100vh] bg-gray-200 rounded-l-lg border-r-4 border-gray-300 overflow-hidden">
+      <div className="h-[70vh] w-[100vh] bg-gray-200 rounded-l-lg border-r-4 border-gray-300 overflow-hidden justify-center items-center flex flex-row">
+        <img
+          src={imgsrc}
+          alt=""
+          width={300}
+          className="flex flex-row justify-center items-center absolute z-50"
+        />
         <div
           className="h-[70vh] w-[65vh] overflow-hidden relative"
           ref={containerRef}
