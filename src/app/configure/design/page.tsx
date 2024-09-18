@@ -1,4 +1,3 @@
-import InputRadio from "@/components/InputRadio";
 import UserImage from "@/components/UserImage";
 
 const Page = () => {

@@ -1,9 +1,9 @@
 "use client";
 import { productSelectordata } from "@/lib/constants";
+import { cn } from "@/lib/utils";
 import { Coffee, Shirt, Smartphone } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import ProductSelector from "./ProductSelector";
-import { cn } from "@/lib/utils";
 
 interface MousePosition {
   x: number | null;

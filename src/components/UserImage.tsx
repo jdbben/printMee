@@ -1,7 +1,7 @@
-import { getuserImg } from "@/app/api/userInfos/root";
-import ResizeImg from "./ResizeImg";
-import { getServerSession, Session } from "next-auth";
 import { options } from "@/app/api/auth/[...nextauth]/options";
+import { getuserImg } from "@/app/api/userInfos/root";
+import { getServerSession, Session } from "next-auth";
+import ResizeImg from "./ResizeImg";
 
 const UserImage = () => {
   let img: string[];
