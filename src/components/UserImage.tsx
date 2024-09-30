@@ -15,10 +15,9 @@ const UserImage = () => {
       width: dim?.width,
       heigth: dim?.height,
     };
-
     return (
       <div>
-        <ResizeImg img={img[img.length - 1]} width={dimensions.width} />
+        <ResizeImg img={img[img.length - 1]} dimensions={dimensions} />
       </div>
     );
   };
