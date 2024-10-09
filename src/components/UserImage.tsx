@@ -15,9 +15,14 @@ const UserImage = () => {
       width: dim?.width,
       heigth: dim?.height,
     };
+    const userName = session?.user?.name;
     return (
       <div>
-        <ResizeImg img={img[img.length - 1]} dimensions={dimensions} />
+        <ResizeImg
+          img={img[img.length - 1]}
+          dimensions={dimensions}
+          userName={userName}
+        />
       </div>
     );
   };

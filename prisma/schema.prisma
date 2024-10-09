@@ -8,12 +8,13 @@ datasource db {
 }
 
 model User {
-  id         Int     @id @default(autoincrement())
-  name       String  @unique
+  id         Int       @id @default(autoincrement())
+  name       String    @unique
   email      String?
   profilePic String?
-  gitHubId   String  @unique
+  gitHubId   String    @unique
   PrevImgs   Image[]
+  Preview    Preview[]
 }
 
 model Image {
@@ -21,4 +22,15 @@ model Image {
   url      String
   userId   Int?
   user     User?  @relation(fields: [userId], references: [id])
+}
+
+model Preview {
+  id       Int     @id @default(autoincrement())
+  img      String
+  product  String
+  position Float[]
+  scale    Float[]
+  color    String
+  userId   Int?
+  user     User?   @relation(fields: [userId], references: [id])
 }

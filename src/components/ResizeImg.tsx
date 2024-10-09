@@ -1,373 +1,242 @@
 "use client";
-import { cn } from "@/lib/utils";
-import { Coffee, Shirt, Smartphone } from "lucide-react";
-import { useState } from "react";
-import Can from "./Canva";
-import ProductSelector from "./ProductSelector";
+import { productSelectord } from "@/lib/validators/optios-validators";
+import { useRouter } from "next/navigation";
+import { ChangeEvent, useEffect, useState } from "react";
 import { CanMug } from "./CanMug";
-
+import { CanPhone } from "./CanPhone";
+import Can from "./Canva";
 export type Props = {
   img: string;
   dimensions?: {
     width?: number;
     heigth?: number;
   };
+  userName?: string | null | undefined;
 };
-
-const ResizeImg: React.FC<Props> = ({ img, dimensions }) => {
+const ResizeImg: React.FC<Props> = ({ img, dimensions, userName }) => {
+  const router = useRouter();
   const [checked, setChecked] = useState<string | null>(null);
-  const [paddingt, setPaddingt] = useState<string>("hidden");
-  const getthechecked = (even: React.ChangeEvent<HTMLInputElement>) => {
-    setChecked(even.target.value);
-  };
   const [color, setColor] = useState("black");
-  const [mugColor, setMugColor] = useState("white");
-  const [scale, setScale] = useState([
-    Number(`0.${dimensions?.width}`),
-    Number(`0.${dimensions?.heigth}`),
-    1,
-  ]);
-  const [mugPosition, setMugPosition] = useState([0, 0, 0]);
-  const [mugScale, setMugScale] = useState([
-    Number(`${dimensions?.width}`) / 10,
-    Number(`${dimensions?.heigth}`) / 10,
-    10,
-  ]);
+  const [scale, setScale] = useState([0, 0, 0]);
   const [position, setPosition] = useState([0, 0, 0]);
 
-  const handleColorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setColor(event.target.id);
-    setChecked(event.target.value);
+  const preview = (checked: string | null) => {
+    const data = {
+      img,
+      checked,
+      color,
+      position,
+      scale,
+      userName,
+    };
+    const func = async () => {
+      try {
+        const response = await fetch("/api/addPreview", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(data),
+        });
+        console.log("Response status:", response.status);
+        const responseData = await response.json();
+        if (!response.ok) {
+          throw new Error("faile to send data");
+        }
+        router.push(
+          `/configure/preview?product=${checked}&userName=${userName}`
+        );
+      } catch (err) {
+        console.log("func err", err);
+      }
+    };
+    func();
   };
+  useEffect(() => {
+    const productData = [
+      {
+        product: "Tshirt",
+        scale: [
+          Number(`0.${dimensions?.width}`),
+          Number(`0.${dimensions?.heigth}`),
+          1,
+        ],
+        position: [0, 0, 0],
+        color: "black",
+      },
+      {
+        product: "Mug",
+        scale: [
+          Number(`${dimensions?.width}`) / 10,
+          Number(`${dimensions?.heigth}`) / 10,
+          10,
+        ],
+        position: [0, 0, 0],
+        color: "white",
+      },
+      {
+        product: "Phone case",
+        scale: [0, 0, 0.5],
+        position: [-0.01, 0, 0],
+        color: "#000000",
+      },
+    ];
+    const selectedProduct = productData.find(
+      (prev) => prev.product === checked
+    );
+    if (selectedProduct) {
+      setColor(selectedProduct.color);
+      setPosition(selectedProduct.position);
+      setScale(selectedProduct.scale);
+    }
+  }, [checked]);
+
   return (
-    <div className="flex flex-1 mt-[10vh]  border-dashed border-2 rounded-lg border-gray-300 overflow-hidden  ">
-      <div className="h-full w-full bg-grey-200 rounded-l-lg border-r-4 border-gray-300 overflow-hidden justify-center items-center ">
-        {checked === "tshirt" ? (
-          <>
-            <Can
-              img={img}
-              dimensions={dimensions}
-              color={color}
-              scale={scale}
-              position={position}
-            />
-          </>
-        ) : checked === "mug" ? (
-          <>
-            <CanMug
-              img={img}
-              color={mugColor}
-              scale={mugScale}
-              position={mugPosition}
-            />
-          </>
-        ) : null}
+    <div className="h-[80vh] w-full mt-[5vh]  bg-white  rounded-3xl flex flex-col md:flex-col lg:flex-row  overflow-hidden shadow-2xl">
+      <div className="h-full w-full lg:w-[90vh]  border-dashed border-2 border-gray-300 lg:rounded-l-3xl bg-gray-100">
+        {/** here the 3D modele for the selected Product*/}
+        {checked === "Tshirt" && (
+          <Can img={img} color={color} scale={scale} position={position} />
+        )}
+        {checked === "Mug" && <CanMug img={img} color={color} scale={scale} />}
+        {checked === "Phone case" && (
+          <CanPhone img={img} color={color} scale={scale} />
+        )}
       </div>
-      <div>
-        <div className="h-full w-[50vh] bg-gray-100 rounded-r-lg justify-center items-center">
-          <div className="flex flex-col mx-auto items-center gap-4 h-full pt-8 overflow-y-auto ">
-            <h3 className="text-xl pb-8 ">Select your product</h3>
-            <div className="grid grid-cols-1">
-              <label className="h-[12vh] w-[45vh] bg-white rounded-2xl border-2 border-gray-200 has-[:checked]:border-sky-600 p-1 lg:p-3">
-                <div className="flex flex-1">
-                  <Smartphone />
-                  <p>Phone Case</p>
-                </div>
-                <input
-                  type="radio"
-                  name="phone"
-                  className="hidden"
-                  value="phonecase"
-                  checked={checked === "phonecase"}
-                  onChange={getthechecked}
-                />
-              </label>
-              <div className={cn("pl-3 pt-2 duration-600", paddingt)}>
-                <ProductSelector />
-              </div>
-            </div>
-            <div className="grid grid-cols-1">
+      <div className="h-full w-full lg:w-[50vh] mt-7 ml-5 mr-5 relative">
+        <h2 className="text-3xl pb-8 font-bold">Select your product</h2>
+        <div className="w-full h-px bg-zinc-200 my-3"></div>
+        <div className="overflow-y-auto w-full h-[calc(100%-10vh)]  flex flex-col items-center gap-7 ">
+          {/** product selector here */}
+          {productSelectord.map((prev) => (
+            <div
+              className="h-[9vh] w-[40vh] bg-white rounded-2xl border-2 border-gray-200 has-[:checked]:border-sky-600  p-1 lg:p-3 flex lg:flex-row hover:cursor-pointer shadow-xl  "
+              onClick={() => setChecked(prev.title)}
+            >
               <div
-                className="h-[12vh] w-[45vh] bg-white rounded-2xl border-2 border-gray-200 has-[:checked]:border-sky-600  p-1 lg:p-3 flex lg:flex-row "
-                onClick={() => setChecked("tshirt")}
+                key={prev.title}
+                className=" h-full w-[50%] flex flex-1 border-r-2 gap-3 border-gray-300 items-center  justify-center "
               >
-                <div className="h-full w-[50%]  border-r-2 border-gray-300 gap-4 flex flex-row justify-center items-center">
-                  <Shirt />
-                  <p>T-shirt</p>
-                </div>
-                <div className="h-full w-[50%] gap-4 flex flex-row justify-center items-center">
-                  <label
-                    htmlFor="black"
-                    className="h-9 w-9 bg-black border-2 border-white rounded-full cursor-pointer ring-1  has-[:checked]:border-sky-600  shadow-xl"
-                  >
-                    <input
-                      type="radio"
-                      name="phone"
-                      id="black"
-                      className="hidden"
-                      value={"tshirt"}
-                      onChange={handleColorChange}
-                    />
-                  </label>
-                  <label
-                    htmlFor="white"
-                    className="h-9 w-9 bg-white border-2 border-white rounded-full cursor-pointer ring-1 has-[:checked]:border-sky-600 shadow-xl"
-                  >
-                    <input
-                      type="radio"
-                      name="phone"
-                      id="white"
-                      className="hidden"
-                      value={"tshirt"}
-                      onChange={handleColorChange}
-                    />
-                  </label>
-                </div>
+                <prev.symbol />{" "}
+                <p className="font-bold text-xl">{prev.title}</p>
               </div>
-              {checked === "tshirt" ? (
-                <>
-                  <div className="h-fit overflow-hidden w-[45vh] bg-white rounded-2xl transform duration-900 ease-out transition-all  ">
-                    <form className="grid grid-cols-2 gap-2 ml-9 mr-9 ">
-                      <p>size:</p>
-                      <input
-                        type="range"
-                        id="size"
-                        name="size"
-                        min="0"
-                        max="1"
-                        step="0.001"
-                        onChange={(event) => {
-                          const newValue = Number(event.target.value);
-
-                          setScale((prev) => [
-                            newValue,
-                            newValue *
-                              (Number(`0.${dimensions?.heigth}`) /
-                                Number(`0.${dimensions?.width}`)),
-                            prev[2],
-                          ]);
-                        }}
-                      />
-                      <p>height:</p>
-                      <input
-                        type="range"
-                        id="size"
-                        name="size"
-                        min="0"
-                        max="1"
-                        step="0.001"
-                        value={scale[1]}
-                        onChange={(event) => {
-                          const newValue = Number(event.target.value);
-                          setScale((prev) => [prev[0], newValue, prev[2]]);
-                        }}
-                      />
-                      <p>Width:</p>
-                      <input
-                        type="range"
-                        id="size"
-                        name="size"
-                        min="0"
-                        max="1"
-                        step="0.001"
-                        value={scale[0]}
-                        onChange={(event) => {
-                          const newValue = Number(event.target.value);
-                          setScale((prev) => [newValue, prev[1], prev[2]]);
-                        }}
-                      />
-                      <p>Z:</p>
-                      <input
-                        type="range"
-                        id="size"
-                        name="size"
-                        min="0"
-                        max="1"
-                        step="0.001"
-                        value={scale[2]}
-                        onChange={(event) => {
-                          const newValue = Number(event.target.value);
-                          setScale((prev) => [prev[0], prev[1], newValue]);
-                        }}
-                      />{" "}
-                      <p>X:</p>
-                      <input
-                        type="range"
-                        id="size"
-                        name="size"
-                        min="-1"
-                        max="1"
-                        step="0.0001"
-                        onChange={(event) => {
-                          const newValue = Number(event.target.value);
-                          setPosition((prev) => [newValue, prev[1], prev[2]]);
-                        }}
-                      />{" "}
-                      <p>Y:</p>
-                      <input
-                        type="range"
-                        id="size"
-                        name="size"
-                        min="-1"
-                        max="1"
-                        step="0.0001"
-                        onChange={(event) => {
-                          const newValue = Number(event.target.value);
-                          setPosition((prev) => [prev[0], newValue, prev[2]]);
-                        }}
-                      />
-                    </form>
-                  </div>
-                </>
-              ) : null}
-            </div>
-            <div className="grid grid-cols-1">
-              <div
-                className="h-[12vh] w-[45vh] bg-white rounded-2xl border-2 border-gray-200 has-[:checked]:border-sky-600  p-1 lg:p-3 flex lg:flex-row "
-                onClick={() => setChecked("mug")}
-              >
-                <div className="h-full w-[50%]  border-r-2 border-gray-300 gap-4 flex flex-row justify-center items-center">
-                  <Coffee />
-                  <p>Mug</p>
-                </div>
-                <div className="h-full w-[50%] gap-4 flex flex-row justify-center items-center">
-                  <label
-                    htmlFor="mug-black"
-                    className="h-9 w-9 bg-black border-2 border-white rounded-full cursor-pointer ring-1  has-[:checked]:border-sky-600  shadow-xl"
-                  >
-                    <input
-                      type="radio"
-                      name="phone"
-                      id="mug-black"
-                      className="hidden"
-                      value={"mug"}
-                      onChange={() => {
-                        setChecked("mug");
-
-                        setMugColor("black");
-                      }}
-                    />
-                  </label>
-                  <label
-                    htmlFor="mug-white"
-                    className="h-9 w-9 bg-white border-2 border-white rounded-full cursor-pointer ring-1 has-[:checked]:border-sky-600 shadow-xl"
-                  >
-                    <input
-                      type="radio"
-                      name="phone"
-                      id="mug-white"
-                      className="hidden"
-                      value={"mug"}
-                      onChange={() => {
-                        setChecked("mug");
-
-                        setMugColor("white");
-                      }}
-                    />
-                  </label>
-                </div>
+              <div className="h-full  w-[50%] flex flex-1 items-center  justify-center">
+                <label
+                  htmlFor="black"
+                  className="h-9 w-9 border-2 overflow-hidden border-white rounded-full cursor-pointer ring-1 has-[:checked]:border-sky-600  shadow-xl "
+                >
+                  <input
+                    type="color"
+                    name="phone"
+                    id="colorselector"
+                    className="rounded-full border-none h-[10vh] w-[10vh] relative right-6 bottom-3 "
+                    value={color}
+                    onChange={(event) => {
+                      setColor(event.target.value);
+                    }}
+                  />
+                </label>
               </div>
-              {checked === "mug" ? (
-                <>
-                  <div className="h-fit overflow-hidden w-[45vh] bg-white rounded-2xl transform duration-900 ease-out transition-all  ">
-                    <form className="grid grid-cols-2 gap-2 ml-9 mr-9 ">
-                      <p>size:</p>
-                      <input
-                        type="range"
-                        min="0"
-                        max="50"
-                        step="0.1"
-                        onChange={(event) => {
-                          const newValue = Number(event.target.value);
-
-                          setMugScale((prev) => [
-                            newValue,
-                            newValue *
-                              (Number(`${dimensions?.heigth}`) /
-                                Number(`${dimensions?.width}`)),
-                            prev[2],
-                          ]);
-                        }}
-                      />
-                      <p>height:</p>
-                      <input
-                        type="range"
-                        min="0"
-                        max="50"
-                        step="0.1"
-                        value={scale[1]}
-                        onChange={(event) => {
-                          const newValue = Number(event.target.value);
-                          setMugScale((prev) => [prev[0], newValue, prev[2]]);
-                        }}
-                      />
-                      <p>width:</p>
-                      <input
-                        type="range"
-                        min="0"
-                        max="50"
-                        step="0.1"
-                        value={scale[0]}
-                        onChange={(event) => {
-                          const newValue = Number(event.target.value);
-                          setMugScale((prev) => [newValue, prev[1], prev[2]]);
-                        }}
-                      />
-                      <p>Z:</p>
-                      <input
-                        type="range"
-                        min="-10"
-                        max="2"
-                        step="0.001"
-                        onChange={(event) => {
-                          const newValue = Number(event.target.value);
-                          setMugPosition((prev) => [
-                            prev[0],
-                            prev[1],
-                            newValue,
-                          ]);
-                        }}
-                      />
-                      <p>X:</p>
-                      <input
-                        type="range"
-                        min="-10"
-                        max="10"
-                        step="0.001"
-                        onChange={(event) => {
-                          const newValue = Number(event.target.value);
-                          setMugPosition((prev) => [
-                            newValue,
-                            prev[1],
-                            prev[2],
-                          ]);
-                        }}
-                      />
-                      <p>Y:</p>
-                      <input
-                        type="range"
-                        min="-10"
-                        max="10"
-                        step="0.001"
-                        onChange={(event) => {
-                          const newValue = Number(event.target.value);
-                          setMugPosition((prev) => [
-                            prev[0],
-                            newValue,
-                            prev[2],
-                          ]);
-                        }}
-                      />
-                    </form>
-                  </div>
-                </>
-              ) : null}
             </div>
+          ))}
+          <div className="w-[40vh] h-fit p-3 border-2 border-gray-300 shadow-sm rounded-2xl">
+            {[
+              {
+                title: "size",
+                step: "0.001",
+                min: "0",
+                max: "1",
+                func: (event: ChangeEvent<HTMLInputElement>) => {
+                  const newValue = Number(event.target.value);
+                  setScale((prev) => [
+                    newValue,
+                    newValue *
+                      (Number(`0.${dimensions?.heigth}`) /
+                        Number(`0.${dimensions?.width}`)),
+                    prev[2],
+                  ]);
+                },
+              },
+              {
+                title: "Height",
+                step: "0.001",
+                min: "0",
+                max: "1",
+                func: (event: ChangeEvent<HTMLInputElement>) => {
+                  const newValue = Number(event.target.value);
+                  setScale((prev) => [prev[0], newValue, prev[2]]);
+                },
+              },
+              {
+                title: "width",
+                step: "0.001",
+                min: "0",
+                max: "1",
+                func: (event: ChangeEvent<HTMLInputElement>) => {
+                  const newValue = Number(event.target.value);
+                  setScale((prev) => [newValue, prev[1], prev[2]]);
+                },
+              },
+              {
+                title: "Z",
+                step: "0.001",
+                min: "0",
+                max: "1",
+                func: (event: ChangeEvent<HTMLInputElement>) => {
+                  const newValue = Number(event.target.value);
+                  setScale((prev) => [prev[0], prev[1], newValue]);
+                },
+              },
+              {
+                title: "X",
+                step: "0.0001",
+                min: "-1",
+                max: "1",
+                func: (event: ChangeEvent<HTMLInputElement>) => {
+                  const newValue = Number(event.target.value);
+                  setPosition((prev) => [newValue, prev[1], prev[2]]);
+                },
+              },
+              {
+                title: "Y",
+                step: "0.0001",
+                min: "-1",
+                max: "1",
+                func: (event: ChangeEvent<HTMLInputElement>) => {
+                  const newValue = Number(event.target.value);
+                  setPosition((prev) => [prev[0], newValue, prev[2]]);
+                },
+              },
+            ].map((prev, index) => (
+              <>
+                <div key={index} className="flex flex-row justify-center gap-9">
+                  <p className="left-0">{prev.title}:</p>
+                  <input
+                    type="range"
+                    min={prev.min}
+                    max={prev.max}
+                    step={prev.step}
+                    id="size"
+                    onChange={prev.func}
+                  />
+                </div>
+              </>
+            ))}
           </div>
+        </div>
+
+        <div className="h-[10vh] w-full bg-white  absolute bottom-0 left-0 flex flex-1 justify-center items-center mb-3 gap-9">
+          <p>total</p>
+          <button
+            className=" bg-sky-400 hover:bg-sky-500 hover:shadow-2xl rounded-lg text-white font-bold h-11 w-60 "
+            disabled={!checked}
+            onClick={() => preview(checked)}
+          >
+            Continue
+          </button>
         </div>
       </div>
     </div>
   );
 };
-
 export default ResizeImg;

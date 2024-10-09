@@ -13,13 +13,13 @@ export interface Colors extends Props {
 const Can: React.FC<Colors> = ({ img, dimensions, color, scale, position }) => {
   return (
     <div className="h-[100vh]">
-      <Canvas camera={{ position: [0, 0, 5], fov: 50 }}>
+      <Canvas camera={{ position: [0, 2, 6], fov: 50 }}>
         <OrbitControls />
         {/* enablePan={false} enableZoom={false} */}
-        <ambientLight intensity={0.5} />
+        <ambientLight intensity={1} />
         <directionalLight
           position={[5, 5, 5]}
-          intensity={0.5}
+          intensity={4}
           castShadow={false}
         />
         <pointLight position={[-5, -5, 5]} intensity={1} />

@@ -1,4 +1,4 @@
-import { getServerSession, Session } from "next-auth";
+import { Session } from "next-auth";
 import { JWT } from "next-auth/jwt";
 import { UploadedFileData } from "uploadthing/types";
 import prisma from "./prismaClient";

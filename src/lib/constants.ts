@@ -32,3 +32,45 @@ export const productSelectordata = [
     color: ["white", "black"],
   },
 ];
+
+export const previewdesc = {
+  tshirt: {
+    highlights: [
+      "Eco-Conscious Dye Process",
+      "Colors derived from natural sources for sustainability.",
+      "Pre-Shrunk Fabric",
+      "Maintains shape and size after washing.",
+      "30-Day Return Policy",
+      "Hassle-free returns for complete peace of mind.",
+    ],
+    Materials: [
+      "100% Organic Cotton",
+      "Soft, breathable fabric for all-day comfort.",
+    ],
+  },
+  phonecase: {
+    highlights: [
+      "Wireless charging copatible",
+      "TPU shock absorption",
+      "Packaging made from recycled materials",
+      "5 year print warranty",
+    ],
+    Materials: [
+      "High-quality, durable material",
+      "Scratch and fingerprint resistant coating",
+    ],
+  },
+  mug: {
+    highlights: [
+      "Microwave and Dishwasher Safe",
+      "Safe for everyday use with convenient cleaning.",
+
+      "Double-Walled Insulation",
+      "Keeps beverages hot or cold for longer periods.",
+    ],
+    Materials: [
+      "Eco-Friendly Printing",
+      "Designs printed using sustainable inks.",
+    ],
+  },
+};
