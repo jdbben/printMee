@@ -4,7 +4,13 @@ import { Canvas } from "@react-three/fiber";
 import { Prop } from "./CanMug";
 import { Phone } from "./Phone3d";
 
-export const CanPhone: React.FC<Prop> = ({ img, color, scale, position }) => {
+export const CanPhone: React.FC<Prop> = ({
+  img,
+  color,
+  scale,
+  position,
+  debug,
+}) => {
   return (
     <div className="h-[100vh]">
       <Canvas camera={{ position: [1, 0, 1], fov: 50 }}>
@@ -18,7 +24,13 @@ export const CanPhone: React.FC<Prop> = ({ img, color, scale, position }) => {
         />
         <pointLight position={[-5, -5, 5]} intensity={1} />
 
-        <Phone img={img} color={color} scale={scale} position={position} />
+        <Phone
+          img={img}
+          color={color}
+          scale={scale}
+          position={position}
+          debug={debug}
+        />
       </Canvas>
     </div>
   );

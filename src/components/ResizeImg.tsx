@@ -62,17 +62,17 @@ const ResizeImg: React.FC<Props> = ({ img, dimensions, userName }) => {
           1,
         ],
         position: [0, 0, 0],
-        color: "black",
+        color: "#000000",
       },
       {
         product: "Mug",
         scale: [
-          Number(`${dimensions?.width}`) / 10,
-          Number(`${dimensions?.heigth}`) / 10,
+          Number(`${dimensions?.width}`),
+          Number(`${dimensions?.heigth}`),
           10,
         ],
         position: [0, 0, 0],
-        color: "white",
+        color: "#000000",
       },
       {
         product: "Phone case",
@@ -92,24 +92,29 @@ const ResizeImg: React.FC<Props> = ({ img, dimensions, userName }) => {
   }, [checked]);
 
   return (
-    <div className="h-[80vh] w-full mt-[5vh]  bg-white  rounded-3xl flex flex-col md:flex-col lg:flex-row  overflow-hidden shadow-2xl">
-      <div className="h-full w-full lg:w-[90vh]  border-dashed border-2 border-gray-300 lg:rounded-l-3xl bg-gray-100">
+    <div className="h-fit w-full mt-[5vh]  bg-white lg:h-[80vh] rounded-3xl flex flex-col lg:flex-row overflow-hidden shadow-2xl">
+      <div className="h-[80vh] w-full lg:w-[90vh]  border-dashed border-2 border-gray-300 lg:rounded-l-3xl bg-gray-100 ">
         {/** here the 3D modele for the selected Product*/}
         {checked === "Tshirt" && (
           <Can img={img} color={color} scale={scale} position={position} />
         )}
-        {checked === "Mug" && <CanMug img={img} color={color} scale={scale} />}
+        {checked === "Mug" && (
+          <CanMug img={img} color={color} scale={scale} position={position} />
+        )}
         {checked === "Phone case" && (
-          <CanPhone img={img} color={color} scale={scale} />
+          <CanPhone img={img} color={color} scale={scale} position={position} />
         )}
       </div>
-      <div className="h-full w-full lg:w-[50vh] mt-7 ml-5 mr-5 relative">
-        <h2 className="text-3xl pb-8 font-bold">Select your product</h2>
+      <div className="h-full w-full lg:w-[50vh] mt-7 ml-5 mr-5 relative ">
+        <h2 className="text-3xl pb-5 font-bold flex flex-col items-center ">
+          Select your product
+        </h2>
         <div className="w-full h-px bg-zinc-200 my-3"></div>
-        <div className="overflow-y-auto w-full h-[calc(100%-10vh)]  flex flex-col items-center gap-7 ">
+        <div className=" w-full h-fit mb-[15vh] lg:h-[calc(100%-10vh)]  flex flex-col items-center gap-7 ">
           {/** product selector here */}
-          {productSelectord.map((prev) => (
+          {productSelectord.map((prev, index) => (
             <div
+              key={index}
               className="h-[9vh] w-[40vh] bg-white rounded-2xl border-2 border-gray-200 has-[:checked]:border-sky-600  p-1 lg:p-3 flex lg:flex-row hover:cursor-pointer shadow-xl  "
               onClick={() => setChecked(prev.title)}
             >
@@ -139,7 +144,7 @@ const ResizeImg: React.FC<Props> = ({ img, dimensions, userName }) => {
               </div>
             </div>
           ))}
-          <div className="w-[40vh] h-fit p-3 border-2 border-gray-300 shadow-sm rounded-2xl">
+          <div className="w-[45vh] lg:w-[40vh] h-fit border-2 border-gray-300 shadow-sm rounded-2xl">
             {[
               {
                 title: "size",
@@ -189,7 +194,7 @@ const ResizeImg: React.FC<Props> = ({ img, dimensions, userName }) => {
               },
               {
                 title: "X",
-                step: "0.0001",
+                step: "0.00001",
                 min: "-1",
                 max: "1",
                 func: (event: ChangeEvent<HTMLInputElement>) => {
@@ -225,7 +230,7 @@ const ResizeImg: React.FC<Props> = ({ img, dimensions, userName }) => {
           </div>
         </div>
 
-        <div className="h-[10vh] w-full bg-white  absolute bottom-0 left-0 flex flex-1 justify-center items-center mb-3 gap-9">
+        <div className="h-[10vh] w-full bg-white absolute bottom-0 left-0 flex flex-1 justify-center items-center mb-3 gap-9 lg:pb-2 ">
           <p>total</p>
           <button
             className=" bg-sky-400 hover:bg-sky-500 hover:shadow-2xl rounded-lg text-white font-bold h-11 w-60 "

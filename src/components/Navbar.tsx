@@ -2,6 +2,7 @@ import { getServerSession, Session } from "next-auth";
 import Link from "next/link";
 import MaxWidthWrapper from "./MaxWidthWrapper";
 import { options } from "@/app/api/auth/[...nextauth]/options";
+import { Button } from "./ui/button";
 
 const Navbar = async () => {
   const session: Session | null = await getServerSession(options);
@@ -24,14 +25,14 @@ const Navbar = async () => {
             ) : (
               <Link href={"/api/auth/signin"}>Sign up</Link>
             )}
-            <div className="h-12 w-fit p-3 bg-sky-500 rounded-2xl  hover:shadow-lg ">
+            <Button className="bg-sky-500 hover:bg-sky-500 ">
               <Link
                 href="/configure/upload"
-                className=" text-white/75 hover:text-white "
+                className=" text-white/75 hover:text-white"
               >
                 Create Your art
               </Link>
-            </div>
+            </Button>
           </div>
         </div>
       </MaxWidthWrapper>

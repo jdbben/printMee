@@ -1,3 +1,4 @@
+import { ImageUp, ShoppingBasket, Sun } from "lucide-react";
 import { title } from "process";
 
 export const imageAssets = [
@@ -33,8 +34,9 @@ export const productSelectordata = [
   },
 ];
 
-export const previewdesc = {
-  tshirt: {
+export const previewdesc = [
+  {
+    product: "Tshirt",
     highlights: [
       "Eco-Conscious Dye Process",
       "Colors derived from natural sources for sustainability.",
@@ -47,8 +49,10 @@ export const previewdesc = {
       "100% Organic Cotton",
       "Soft, breathable fabric for all-day comfort.",
     ],
+    price: "30.00",
   },
-  phonecase: {
+  {
+    product: "Phone case",
     highlights: [
       "Wireless charging copatible",
       "TPU shock absorption",
@@ -59,8 +63,10 @@ export const previewdesc = {
       "High-quality, durable material",
       "Scratch and fingerprint resistant coating",
     ],
+    price: "15.00",
   },
-  mug: {
+  {
+    product: "Mug",
     highlights: [
       "Microwave and Dishwasher Safe",
       "Safe for everyday use with convenient cleaning.",
@@ -72,5 +78,22 @@ export const previewdesc = {
       "Eco-Friendly Printing",
       "Designs printed using sustainable inks.",
     ],
+    price: "20.00",
   },
-};
+];
+
+export const progressbar = [
+  {
+    step: 1,
+    title: "Add image",
+    disc: "Choose an image for your product",
+    sticker: ImageUp,
+  },
+  {
+    step: 2,
+    title: "Customize design",
+    disc: "Make the product yours",
+    sticker: ShoppingBasket,
+  },
+  { step: 3, title: "Summary", disc: "Review your final design", sticker: Sun },
+];

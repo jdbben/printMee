@@ -8,9 +8,17 @@ export interface Colors extends Props {
   color?: string;
   scale?: number[];
   position?: number[];
+  debug?: boolean;
 }
 
-const Can: React.FC<Colors> = ({ img, dimensions, color, scale, position }) => {
+const Can: React.FC<Colors> = ({
+  img,
+  dimensions,
+  color,
+  scale,
+  position,
+  debug,
+}) => {
   return (
     <div className="h-[100vh]">
       <Canvas camera={{ position: [0, 2, 6], fov: 50 }}>
@@ -29,6 +37,7 @@ const Can: React.FC<Colors> = ({ img, dimensions, color, scale, position }) => {
           color={color}
           scale={scale}
           position={position}
+          debug={debug}
         />
       </Canvas>
     </div>

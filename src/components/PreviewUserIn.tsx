@@ -3,23 +3,29 @@ import { useEffect, useState } from "react";
 import { CanMug } from "./CanMug";
 import { CanPhone } from "./CanPhone";
 import Can from "./Canva";
+import { Check } from "lucide-react";
+import { previewdesc } from "@/lib/constants";
+import { creatCheckoutSession } from "@/app/configure/preview/actions";
+import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 export interface Userin {
   name?: string | null;
 }
-const PreviewUserIn: React.FC<Userin> = (name) => {
+const PreviewUserIn: React.FC<Userin> = ({ name }) => {
+  const router = useRouter();
   const [data, setDAta] = useState<any>(null);
-
   const fetchData = async () => {
-    if (typeof name.name === "string") {
+    if (typeof name === "string") {
       try {
         const response = await fetch(
-          `/api/addPreview?name=${encodeURIComponent(name.name)}`
+          `/api/addPreview?name=${encodeURIComponent(name)}&type=Preview`
         );
         if (!response.ok) {
           throw new Error("cant get your data no response from api");
         }
         const result = await response.json();
-        setDAta(result);
+
+        setDAta(result.data[result.data.length - 1]);
       } catch (err) {
         console.log("cant get data", err);
       }
@@ -30,52 +36,119 @@ const PreviewUserIn: React.FC<Userin> = (name) => {
       fetchData();
     }
   }, [name]);
-  return (
-    <div className="flex  lg:flex-1 ">
-      <div className="bg-red-300 h-[80vh] w-[50vh]">
-        {data ? (
-          <div>
-            <>
-              <Canvas data={data.data} />
-            </>
-          </div>
-        ) : null}
-      </div>
-      <div className="bg-sky-300 h-[80vh] w-full"></div>
-    </div>
-  );
-};
-const Canvas = (data: any) => {
-  if (data.data[0].product === "tshirt") {
+
+  const func = () => {
+    const selectedProduct = previewdesc.find(
+      (prev) => prev.product === data?.product
+    );
+
+    let highlights, material, price;
+
+    if (selectedProduct) {
+      highlights = selectedProduct.highlights;
+
+      material = selectedProduct.Materials;
+      price = selectedProduct.price;
+    }
+
+    const { mutate: createPaymentSession } = useMutation({
+      mutationKey: ["get-checkout-session"],
+      mutationFn: creatCheckoutSession,
+      onSuccess: ({ url }) => {
+        if (url) router.push(url);
+        else throw new Error("Unable to retrieve payment URL.");
+      },
+      onError: () => {
+        alert("there was an err with the payment please try again later");
+      },
+    });
+
     return (
       <div>
-        <Can
-          color={data.data[0].color}
-          img={data.data[0].img}
-          position={data.data[0].position}
-          scale={data.data[0].scale}
-        />
+        <div className="flex flex-row">
+          <div>
+            <p className="font-bold text-xl pb-4">Highlights</p>
+            <ul>
+              {highlights?.map((h, index) => (
+                <li key={index} className="list-disc">
+                  {h}
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <p className="font-bold text-xl pb-4">Material</p>
+            <ul>
+              {material?.map((h, index) => (
+                <li key={index + 1} className="list-disc">
+                  {h}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+        <div className="my-2 h-px bg-gray-200 mt-11"></div>
+        <div className="flex items-center justify-between pt-9 ">
+          <p>Base price</p>
+          <p className="order-last">${price}</p>
+        </div>
+        <div className="my-2 h-px bg-gray-200"></div>
+        <div className="flex items-center justify-between font-bold pt-7">
+          <p>order total</p>
+          <p className="order-last font-bold">${price}</p>
+        </div>
+        <div className="h-fit w-full flex justify-end">
+          <button
+            onClick={() => createPaymentSession()}
+            className="mt-[10vh] bg-sky-500 rounded-lg pt-2 pb-2 pl-11 pr-11 text-white hover:text-gray-200 shadow-lg  "
+          >
+            Check out
+          </button>
+        </div>
       </div>
     );
-  } else if (data.data[0].product === "mug") {
-    return (
-      <CanMug
-        color={data.data[0].color}
-        img={data.data[0].img}
-        position={data.data[0].position}
-        scale={data.data[0].scale}
-      />
-    );
-  } else if (data.data[0].product === "phonecase") {
-    return (
-      <CanPhone
-        color={data.data[0].color}
-        img={data.data[0].img}
-        position={data.data[0].position}
-        scale={data.data[0].scale}
-      />
-    );
-  }
+  };
+
+  return (
+    <div className="flex flex-col lg:flex-row pb-[11vh] ">
+      <div className=" h-[80vh] w-full md:w-full lg:w-[55vh] overflow-hidden">
+        {/** here the 3D modele for the selected Product*/}
+        {data?.product === "Tshirt" && (
+          <Can
+            img={data.img}
+            color={data.color}
+            scale={data.scale}
+            position={data.position}
+            debug={false}
+          />
+        )}
+        {data?.product === "Mug" && (
+          <CanMug
+            img={data.img}
+            color={data.color}
+            scale={data.scale}
+            debug={false}
+          />
+        )}
+        {data?.product === "Phone case" && (
+          <CanPhone
+            img={data.img}
+            color={data.color}
+            scale={data.scale}
+            debug={false}
+          />
+        )}
+      </div>
+      <div className=" h-[80vh] w-full pt-[15vh] pl-9 ">
+        <h1 className="text-3xl font-bold pb-5 ">Your {data?.product}</h1>
+        <div className="flex flex-cols items-center pb-8">
+          <Check className="text-sky-400" />
+          <p>In stock and ready to ship</p>
+        </div>
+        {func()}
+      </div>
+    </div>
+  );
 };
 
 export default PreviewUserIn;

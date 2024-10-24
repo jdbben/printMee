@@ -1,10 +1,11 @@
 "use client";
 import { Decal, useGLTF, useTexture } from "@react-three/drei";
-import { useEffect, useRef } from "react";
+import { Ref, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { Material, Mesh, MeshBasicMaterial, MeshStandardMaterial } from "three";
 import { GLTF } from "three-stdlib";
 import { Colors } from "./Canva";
+import { useFrame } from "@react-three/fiber";
 
 interface GLTFAction extends THREE.AnimationClip {}
 type GLTFResult = GLTF & {
@@ -24,15 +25,49 @@ export const Tshirt: React.FC<Colors> = ({
   color,
   scale,
   position,
+  debug,
   ...props
 }) => {
+  const decal: Ref<THREE.Group<THREE.Object3DEventMap>> | undefined =
+    useRef(null);
   const texture = useTexture(img);
+  const [rotationDirection, setRotationDirection] = useState(1);
+  let thedebug = true;
+  if (debug === false) {
+    thedebug = debug;
+    useFrame((state, delta) => {
+      if (decal.current) {
+        decal.current.rotation.y += 0.0005 * rotationDirection;
+
+        decal.current.rotation.x += 0.0001 * rotationDirection;
+        decal.current.rotation.z += 0.0001 * rotationDirection;
+
+        if (
+          decal.current.rotation.y >= Math.PI / 6 ||
+          decal.current.rotation.y <= -Math.PI / 6
+        ) {
+          setRotationDirection(-rotationDirection);
+        }
+
+        decal.current.rotation.x = THREE.MathUtils.clamp(
+          decal.current.rotation.x,
+          -Math.PI / 20,
+          Math.PI / 20
+        );
+
+        decal.current.rotation.z = THREE.MathUtils.clamp(
+          decal.current.rotation.z,
+          -Math.PI / 50,
+          Math.PI / 50
+        );
+      }
+    });
+  }
   const { nodes, materials, scene } = useGLTF(
     "/newpTshirt01.glb"
   ) as GLTFResult;
-  const decal = useRef<THREE.Mesh>(null);
-  const colorrbg = new THREE.Color(color);
 
+  const colorrbg = new THREE.Color(color);
   useEffect(() => {
     if (scene) {
       scene.traverse((child) => {
@@ -73,7 +108,7 @@ export const Tshirt: React.FC<Colors> = ({
     b = new THREE.Vector3(scale[0], scale[1], scale[2]);
   }
   return (
-    <group {...props} dispose={null}>
+    <group ref={decal} {...props} dispose={null}>
       <mesh
         geometry={nodes.Mesh.geometry}
         material={materials.lambert1}
@@ -85,7 +120,7 @@ export const Tshirt: React.FC<Colors> = ({
         scale={[5, 5, 5]}
       >
         <meshBasicMaterial transparent opacity={0} />
-        <Decal ref={decal} debug position={a} rotation={[0, 0, 0]} scale={b}>
+        <Decal debug={thedebug} position={a} rotation={[0, 0, 0]} scale={b}>
           <meshBasicMaterial
             map={texture}
             polygonOffset

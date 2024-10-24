@@ -1,6 +1,5 @@
 import prisma from "@/db/prismaClient";
-import { getServerSession, Session } from "next-auth";
-import { options } from "../auth/[...nextauth]/options";
+import { Session } from "next-auth";
 
 export const getuserImg = async (session: Session | null) => {
   let userImgData: string[] = [];

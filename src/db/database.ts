@@ -20,3 +20,19 @@ export const fetchDataFromDatabase = async (name: string) => {
     throw new Error("cant get data for preview");
   }
 };
+
+export const userData = async (name: string) => {
+  try {
+    const userData = await prisma.user.findUnique({
+      where: {
+        name: name,
+      },
+      include: {
+        PrevImgs: true,
+      },
+    });
+  } catch (err) {
+    console.log("cant get your user infos ", err);
+    throw new Error("cant get data for user");
+  }
+};

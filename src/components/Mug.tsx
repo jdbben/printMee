@@ -5,11 +5,12 @@ Command: npx gltfjsx@6.5.2 public/mug.glb -o src/app/component/Mug.tsx -r public
 interface GLTFAction extends THREE.AnimationClip {}
 
 import { Decal, useGLTF, useTexture } from "@react-three/drei";
-import React, { useEffect } from "react";
+import React, { Ref, useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { Material, Mesh, MeshBasicMaterial, MeshStandardMaterial } from "three";
 import { GLTF } from "three-stdlib";
 import { Prop } from "./CanMug";
+import { useFrame } from "@react-three/fiber";
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -28,11 +29,48 @@ export const Mug: React.FC<Prop> = ({
   color,
   scale,
   position,
+  debug,
   ...props
 }) => {
   const { nodes, materials, scene } = useGLTF("/mug.glb") as GLTFResult;
-  const texture = useTexture(img);
+
   const colorrbg = new THREE.Color(color);
+  const decal: Ref<THREE.Group<THREE.Object3DEventMap>> | undefined =
+    useRef(null);
+  const texture = useTexture(img);
+  // const [rotation, setRotation] = useState([0, 0, 0]);
+  const [rotationDirection, setRotationDirection] = useState(1);
+  let thedebug = true;
+  if (debug === false) {
+    thedebug = debug;
+    useFrame((state, delta) => {
+      if (decal.current) {
+        decal.current.rotation.y += 0.0005 * rotationDirection;
+
+        decal.current.rotation.x += 0.0001 * rotationDirection;
+        decal.current.rotation.z += 0.0001 * rotationDirection;
+
+        if (
+          decal.current.rotation.y >= Math.PI / 6 ||
+          decal.current.rotation.y <= -Math.PI / 6
+        ) {
+          setRotationDirection(-rotationDirection);
+        }
+
+        decal.current.rotation.x = THREE.MathUtils.clamp(
+          decal.current.rotation.x,
+          -Math.PI / 20,
+          Math.PI / 20
+        );
+
+        decal.current.rotation.z = THREE.MathUtils.clamp(
+          decal.current.rotation.z,
+          -Math.PI / 50,
+          Math.PI / 50
+        );
+      }
+    });
+  }
   useEffect(() => {
     if (scene) {
       scene.traverse((child) => {
@@ -64,20 +102,35 @@ export const Mug: React.FC<Prop> = ({
       });
     }
   }, [color]);
-  let a;
+  let a, b;
+  let rotation = new THREE.Euler(0, 0, 0);
   if (scale) {
-    a = new THREE.Vector3(scale[0], scale[1], scale[2]);
+    a = new THREE.Vector3(scale[0] * 10, scale[1] * 10, scale[2] * 10);
   }
-  let b;
+
   if (position) {
-    b = new THREE.Vector3(position[0], position[1], position[2]);
+    b = new THREE.Vector3(
+      Math.sin(position[0] * 10),
+      position[1] * 10,
+      Math.cos(position[2] * 10)
+    );
+    const rot = Math.atan2(
+      Math.sin(position[0] * 10),
+      Math.cos(position[2] * 10)
+    );
+    rotation = new THREE.Euler(
+      Math.sin(position[0] * 10),
+      rot,
+      Math.cos(position[2] * 10)
+    );
   }
+  console.log(b);
   return (
-    <group {...props} dispose={null}>
+    <group ref={decal} {...props} dispose={null}>
       <mesh geometry={nodes.Mesh.geometry} material={materials.mug} />
       <mesh geometry={nodes.Mesh_1.geometry} material={materials.printTable}>
         <meshBasicMaterial transparent opacity={0} />
-        <Decal debug position={b} rotation={[0, 0, 0]} scale={a}>
+        <Decal debug={thedebug} position={b} rotation={rotation} scale={a}>
           <meshBasicMaterial
             map={texture}
             polygonOffset
