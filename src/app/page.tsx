@@ -1,4 +1,5 @@
 import HeaderTitel from "@/components/HeaderTitel";
+import Login from "@/components/Login";
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import Phone from "@/components/Phone";
 import SlideShow from "@/components/SlideShow";
@@ -154,52 +155,8 @@ export default function Home() {
           </div>
 
           <div className="relative h-fit gap-5 mb-11 w-fit mx-auto rounded-[50px] bg-gradient-to-r from-cyan-400 to-blue-500 shadow-2xl mt-[10vh] overflow-hidden grid grid-cols-1 lg:grid-cols-2 items-center justify-center">
-            <div className="relative  h-[500px] w-[350px] rounded-[30px] shadow-2xl bg-white/30 backdrop-blur-md ring-2 ring-white flex flex-col items-center justify-center m-10">
-              <div className="bg-slate-100 h-fit w-fit rounded-lg shadow-lg p-2 mx-auto ">
-                <p className="font-bold text-center">
-                  <span className="text-sky-400">Print</span>mee
-                </p>
-              </div>
-              <p className="font-bold text-gray-200 text-xl text-center m-2">
-                Log in to continue
-              </p>
-              <div className="w-full flex flex-col items-center mb-4">
-                <input
-                  type="text"
-                  placeholder="Email Address"
-                  className="h-9 w-[80%] md:w-[25vh] bg-transparent focus:outline-none focus:ring focus:border-blue-500 rounded-lg ring-2 ring-white p-3 mb-4"
-                />
-                <input
-                  type="password"
-                  placeholder="Password"
-                  className="h-9 w-[80%] md:w-[25vh] bg-transparent focus:outline-none focus:ring focus:border-blue-500 rounded-lg ring-2 ring-white p-3"
-                />
-              </div>
-              <p className="text-center mb-3 cursor-pointer">
-                Forget Password?
-              </p>
-              <button className="w-[20vh] bg-blue-500 text-white rounded-lg py-2 mb-2">
-                Continue
-              </button>
-              <p className="text-center mb-2">
-                Don't have an account?{" "}
-                <a href="#" className="text-blue-500">
-                  Sign up
-                </a>
-              </p>
-              <p className="text-center mb-2">or</p>
-              <div className="w-full flex flex-col items-center gap-2">
-                <button className="w-[20vh] bg-gray-800 text-white rounded-lg py-1 mb-1">
-                  Google
-                </button>
-                <button className="w-[20vh] bg-blue-800 text-white rounded-lg py-1 mb-1">
-                  Facebook
-                </button>
-                <button className="w-[20vh] bg-blue-700 text-white rounded-lg py-1">
-                  LinkedIn
-                </button>
-              </div>
-            </div>
+            {/** here login cmp */}
+            <Login />
             <div className="h-full w-full m-5">
               <h2
                 className="text-white font-bold text-3xl  lg:text-4xl mt-[9vh] mr-8 "

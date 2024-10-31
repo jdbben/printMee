@@ -1,6 +1,8 @@
 import { userCreate } from "@/db/find";
 import type { NextAuthOptions } from "next-auth";
+import type { Provider } from "react";
 import GitHubProvider from "next-auth/providers/github";
+import NextAuth from "next-auth";
 
 export const options: NextAuthOptions = {
   session: {
@@ -13,6 +15,9 @@ export const options: NextAuthOptions = {
       clientSecret: process.env.GITHUB_SECRETS as string,
     }),
   ],
+  // pages: {
+  //   signIn: "/signIn",
+  // },
   callbacks: {
     async session({ session, token }) {
       if (token.sub) {
@@ -22,3 +27,15 @@ export const options: NextAuthOptions = {
     },
   },
 };
+
+// export const providerMap = options.providers
+//   .map((provider) => {
+//     return { id: provider.id, name: provider.name };
+//   })
+//   .filter((provider) => provider.id !== "credentials");
+// export const { handlers, auth, signIn, signOut } = NextAuth({
+//   providers,
+//   pages: {
+//     signIn: "/signIn",
+//   },
+// });

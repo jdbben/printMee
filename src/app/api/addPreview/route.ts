@@ -23,7 +23,6 @@ export async function GET(request: Request) {
       );
     }
   } else if (type === "upload") {
-    console.log(type, "PppppppppPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPPP");
     try {
       const name = searchParams.get("name");
       if (!name) {

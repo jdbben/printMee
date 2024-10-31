@@ -8,17 +8,15 @@ const Upload = ({ name }: { name: string | null }) => {
     router.push("/configure/design/");
   };
 
-  const fetchdata = async (name: string | null) => {
+  const fetchdata = async () => {
     if (name) {
       try {
         const res = await fetch(
           `/api/addPreview?name=${encodeURIComponent(name)}&type=upload`
         );
-        console.log(
-          res,
-          "TTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTTT"
-        );
-        if (res.ok) {
+        const da = await res.json();
+        const data = da[0];
+        if (res.ok && data != undefined) {
           routing();
         }
       } catch (err) {
@@ -26,7 +24,7 @@ const Upload = ({ name }: { name: string | null }) => {
       }
     }
   };
-  fetchdata(name);
+  fetchdata();
   return (
     <div className="h-full w-full">
       <div className="mx-auto mt-10 h-[50vh] w-[120vh] bg-gray-200 rounded-xl hover:bg-gray-300 hover:text-gray-400 p-4">
