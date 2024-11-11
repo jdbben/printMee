@@ -54,15 +54,17 @@ const PreviewUserIn: React.FC<Userin> = ({ name }) => {
     const { mutate: createPaymentSession } = useMutation({
       mutationKey: ["get-checkout-session"],
       mutationFn: creatCheckoutSession,
-      onSuccess: ({ url }) => {
-        if (url) router.push(url);
-        else throw new Error("Unable to retrieve payment URL.");
+      onSuccess: (data) => {
+        if (data && data.url) {
+          router.push(data.url);
+        } else {
+          throw new Error("Unable to retrieve payment URL.");
+        }
       },
       onError: () => {
-        alert("there was an err with the payment please try again later");
+        alert("There was an error with the payment. Please try again later.");
       },
     });
-
     return (
       <div>
         <div className="flex flex-row">

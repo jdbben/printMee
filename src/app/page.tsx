@@ -36,7 +36,12 @@ export default function Home() {
                 Preserve Your Cherished Moments with Custom Creations from
                 PrintMee!
               </p>
-              <TypeEffect classname="pt-5 font-bold font-poppins" text={text} />
+              <TypeEffect
+                classname="pt-5 font-bold font-poppins"
+                text={text}
+                typingSpeed={10}
+              />
+              {/** lower the typingSpeed for faster typing effect*/}
               <p className=""></p>
               <ul className="space-y-2 pt-5 ">
                 <li className="flex gap-1.5 items-center text-left">
@@ -169,7 +174,9 @@ export default function Home() {
                   classname="pt-5 font-bold font-poppins text-white"
                   text={text2}
                   stylish={{ textShadow: "black 1px 2px 10px" }}
-                />
+                  typingSpeed={10}
+                />{" "}
+                {/** lower the typingSpeed for faster typing effect*/}
               </div>
             </div>
           </div>

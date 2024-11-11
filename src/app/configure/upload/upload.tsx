@@ -15,8 +15,9 @@ const Upload = ({ name }: { name: string | null }) => {
           `/api/addPreview?name=${encodeURIComponent(name)}&type=upload`
         );
         const da = await res.json();
-        const data = da[0];
-        if (res.ok && data != undefined) {
+        const data = da.data;
+
+        if (res.ok && typeof data === "string") {
           routing();
         }
       } catch (err) {

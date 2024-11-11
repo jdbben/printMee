@@ -31,6 +31,7 @@ export const userData = async (name: string) => {
         PrevImgs: true,
       },
     });
+    return userData?.PrevImgs[0].url;
   } catch (err) {
     console.log("cant get your user infos ", err);
     throw new Error("cant get data for user");

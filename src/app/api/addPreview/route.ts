@@ -29,7 +29,10 @@ export async function GET(request: Request) {
         return NextResponse.json({ err: "Name is required " }, { status: 400 });
       }
       const result = await userData(name);
-      return NextResponse.json({ message: "Data retrieved", data: result });
+      return NextResponse.json({
+        message: "Data retrieved",
+        data: result,
+      });
     } catch (error) {
       console.error("Error processing request:", error);
       return NextResponse.json(
