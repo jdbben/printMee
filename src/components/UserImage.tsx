@@ -10,6 +10,7 @@ type Props = {
 
 const UserImage: React.FC<Props> = ({ session, lastImg }) => {
   const [dimensions, setDimensions] = useState<{ width?: number; height?: number } | null>(null);
+  const [imgurl,setimgUrl] = useState(lastImg)
 
   useEffect(() => {
 
