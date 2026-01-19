@@ -61,7 +61,8 @@ const PreviewUserIn: React.FC<Userin> = ({ name }) => {
           throw new Error("Unable to retrieve payment URL.");
         }
       },
-      onError: () => {
+      onError: (error: any) => {
+          console.error("Payment session creation error:", error);
         alert("There was an error with the payment. Please try again later.");
       },
     });
