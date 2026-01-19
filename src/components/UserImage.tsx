@@ -35,7 +35,10 @@ const UserImage: React.FC<Props> = ({ session, lastImg }) => {
     fetchDimensions();
   }, [lastImg]);
 
-  if (!lastImg || !dimensions) return <div>Loading...</div>
+  if (!lastImg || !dimensions){ 
+    setDimensions({ width: 10, height: 10 }) 
+    return <div>Loading...</div>
+  }
 
   return <ResizeImg img={lastImg} dimensions={dimensions} userName={session?.user?.name} />
 };
