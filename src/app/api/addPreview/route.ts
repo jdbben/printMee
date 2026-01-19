@@ -48,6 +48,7 @@ export async function POST(request: Request) {
   try {
     const data = await request.json();
     const result = await addPrewview(data);
+    
     return NextResponse.json({ message: "Data received", data: result });
   } catch (error) {
     console.error("Error processing request:", error);

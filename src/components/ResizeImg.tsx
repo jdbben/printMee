@@ -29,6 +29,7 @@ const ResizeImg: React.FC<Props> = ({ img, dimensions, userName }) => {
       scale,
       userName,
     };
+    
     const func = async () => {
       try {
         const response = await fetch("/api/addPreview", {
@@ -50,8 +51,10 @@ const ResizeImg: React.FC<Props> = ({ img, dimensions, userName }) => {
         console.log("func err", err);
       }
     };
-    func();
+  
+    func()
   };
+
   useEffect(() => {
     const productData = [
       {
@@ -89,8 +92,9 @@ const ResizeImg: React.FC<Props> = ({ img, dimensions, userName }) => {
       setPosition(selectedProduct.position);
       setScale(selectedProduct.scale);
     }
-  }, [checked]);
 
+  }, [checked]);
+useEffect(()=>{console.log(img)},[img])
   return (
     <div className="h-fit w-full mt-[5vh]  bg-white lg:h-[80vh] rounded-3xl flex flex-col lg:flex-row overflow-hidden shadow-2xl">
       <div className="h-[80vh] w-full lg:w-[90vh]  border-dashed border-2 border-gray-300 lg:rounded-l-3xl bg-gray-100 ">
@@ -104,6 +108,9 @@ const ResizeImg: React.FC<Props> = ({ img, dimensions, userName }) => {
         {checked === "Phone case" && (
           <CanPhone img={img} color={color} scale={scale} position={position} />
         )}
+          
+        
+
       </div>
       <div className="h-full w-full lg:w-[50vh] mt-7 ml-5 mr-5 relative ">
         <h2 className="text-3xl pb-5 font-bold flex flex-col items-center ">

@@ -2,12 +2,14 @@
 
 import { options } from "@/app/api/auth/[...nextauth]/options";
 import { fetchDataFromDatabase } from "@/db/database";
-import db from "@/db/prismaClient";
+import db  from "@/db/prismaClient";
 import { previewdesc } from "@/lib/constants";
 import { stripe } from "@/lib/stripe";
-import { Order } from "@prisma/client";
+
+
 import { getServerSession, Session } from "next-auth";
 
+type Order = Awaited<ReturnType<typeof db.order.findFirst>>;
 export const creatCheckoutSession = async () => {
   const session: Session | null = await getServerSession(options);
 
